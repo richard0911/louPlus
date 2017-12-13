@@ -1,10 +1,21 @@
 #!/usr/bin/env python3
 import sys
 
+def getPara():
+    wages = []
+    for i in sys.argv[1:]:
+        try:
+            info = [int(i.split(':')[0]), int(i.split(':')[1])]
+        except:
+            print('Parameter Error')
+            sys.exit(0)
+        wages.append(info)
+    return wages
+
 
 def cal(price):
     for wid in wages:
-        wage = int(wages[wid])
+        wage = wid[1]
         insures = wage * 0.165
         amount = wage - 3500 - insures
         after = 0
@@ -26,18 +37,9 @@ def cal(price):
             after = wage - insures - amount
         else:
             after = wage - insures
-        print('{}:{:.2f}'.format(int(wid), after))
+        print('{}:{:.2f}'.format(wid[0], after))
 
 
 if __name__ == '__main__':
-    wages={}
-    try:
-       info = []
-       for i in sys.argv[1:]:
-           info.append(i.split(':'))
-       print(info)
-       wages = dict(info)
-    except Exception as e:
-        print(e)
-        print('Parameter Error')    
+    wages = getPara()
     cal(wages)
