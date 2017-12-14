@@ -1,16 +1,39 @@
 #!/usr/bin/env python3
 import sys
+import os.path
+
+
+
+
+class getinfo():
+    def __init__(self):
+        
+
 
 def getPara():
-    wages = []
+    paral = []
+    dic = {}
     for i in sys.argv[1:]:
-        try:
-            info = [int(i.split(':')[0]), int(i.split(':')[1])]
-        except:
+        paral.append(i)
+    
+    for i in len(paral):
+        if paral[i] == '-c':
+            dic[cfg] = para[i+1]
+        elif paral[i] == '-d':
+            dic[icsv] = paral[i+1]
+        elif paral[i] == '-o':
+            dic[ocsv] = paral[i+1]
+        else:
             print('Parameter Error')
-            sys.exit(0)
-        wages.append(info)
-    return wages
+            sys.exit(1) 
+            
+    for i in dic.values():
+        if os.path.isfile(i):
+            continue
+        else:
+            print('File Error')
+            sys.exit(1)
+    return dic
 
 
 def cal(price):
@@ -41,5 +64,4 @@ def cal(price):
 
 
 if __name__ == '__main__':
-    wages = getPara()
-    cal(wages)
+    dic1 = getpara()
