@@ -40,6 +40,8 @@ def get_para():  # 从命令行参数获取输入信息
             dic['ocsv'] = paral[i+1]
 
     for d in dic:
+        if d == 'ocsv':
+            continue
         if not os.path.exists(dic[d]):
             print('file not exists')
             sys.exit(1)
@@ -68,7 +70,7 @@ def read_file(filename):  # 读取文件
 def write_file(filename, dic):  # 写入文件
     with open(filename, 'w') as file:
         for d in dic:
-            s = '{},{:.2f},{:.2f},{:.2f},{:.2f}\n'.format(d, dic[d][0]
+            s = '{},{},{:.2f},{:.2f},{:.2f}\n'.format(d, int(dic[d][0])
                                           , dic[d][1], dic[d][2]
                                           , dic[d][3])
             file.write(s)
