@@ -91,9 +91,9 @@ def cal(dc, ds):
         else:
             insures = salary * insurespre
 
-        tax = salary - insures
+        tax = salary - insures - 3500
 
-        if tax <= 1500:
+        if tax <= 1500 and tax > 0:
             tax = tax * 0.03 - 0
         elif tax <= 4500:
             tax = tax * 0.10 - 105
@@ -105,9 +105,10 @@ def cal(dc, ds):
             tax = tax * 0.30 - 2755
         elif tax <= 80000:
             tax = tax * 0.35 - 5505
-        else:
+        elif tax > 80000:
             tax = tax * 0.45 - 13505
-
+        else:
+            tax = 0
         after = salary - insures - tax
         list1 = [salary, insures, tax, after]
         dic[i] = list1
