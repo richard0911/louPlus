@@ -39,6 +39,10 @@ def get_para():  # 从命令行参数获取输入信息
         elif paral[i] == '-o':
             dic['ocsv'] = paral[i+1]
 
+    for d in dic:
+        if not os.path.exists(dic[d]):
+            print('file not exists')
+            sys.exit(1)
     return dic
 
 
@@ -52,7 +56,10 @@ def read_file(filename):  # 读取文件
                 opera = '='
             else:
                 opera = ','
-            i, j = i.strip().split(opera)
+            try:
+                i, j = i.strip().split(opera)
+            except:
+                print('File Error')
             listt.append([i.strip(), float(j.strip())])
         dic = dict(listt)
     return dic
