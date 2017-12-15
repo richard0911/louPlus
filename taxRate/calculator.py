@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import os.path
+from multiprocessing import Queue, Process
 
 
 class Info:
@@ -115,10 +116,35 @@ def cal(dc, ds):
 
     return dic
 
-if __name__ == '__main__':
+def part1():
     dic1 = get_para()
     cl = Info()
     cl.salaryl = read_file(dic1['icsv'])
     cl.configl = read_file(dic1['cfg'])
+    package = [cl, dic1]
+    queue1.put(package)
+
+def part2():
+    package =queue1.get()
+    cl = package[0]
     dic2 = cal(cl.configl, cl.salaryl)
+    package.append(dic2)
+    queue2.put(package)
+
+def part3():
+    package = queue2.get()
+    dic1, dic2 = package[1], package[2]
     write_file(dic1['ocsv'], dic2)
+
+if __name__ == '__main__':
+    queue1 = Queue()
+    queue2 = Queue()
+    proc1 = Process(target=part1)
+    proc2 = Process(target=part2)
+    proc3 = Process(target=part3)
+    proc1.start()
+    proc2.start()
+    proc3.start()
+    proc1.join()
+    proc2.join()
+    proc3.join()
