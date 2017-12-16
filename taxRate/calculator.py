@@ -2,6 +2,8 @@
 import sys
 import os.path
 from multiprocessing import Queue, Process
+import getopt
+from datetime import datetime
 
 
 class Info:
@@ -27,25 +29,59 @@ class Info:
 
 
 def get_para():  # 从命令行参数获取输入信息
-    paral = []
     dic = {}
-    for i in sys.argv[1:]:
-        paral.append(i)
+    argv = sys.argv[1:]
+    shortargs = 'hC:c:d:o:'
+    longargs = ['help']
 
-    for i in range(len(paral)):
-        if paral[i] == '-c':
-            dic['cfg'] = paral[i+1]
-        elif paral[i] == '-d':
-            dic['icsv'] = paral[i+1]
-        elif paral[i] == '-o':
-            dic['ocsv'] = paral[i+1]
+    opts, args = getopt.getopt(argv, shortargs, longargs)
+
+    for key, val in opts:
+        if key == '-C':
+            dic['city'] = val.upper()
+        elif key == '-c':
+            dic['config'] = val
+        elif key == '-d':
+            dic['info'] = val
+        elif key == '-o':
+            dic['output'] = val
+        elif key in ('-h', '--help'):
+            print('Usage: calculator.py -C cityname -c configfile -d userdata -o resultdata')
+            exit(0)
+        else:
+            print('args Error')
+            exit(0)
 
     for d in dic:
-        if d == 'ocsv':
+        if d == 'output' or d == 'city':
             continue
         if not os.path.exists(dic[d]):
             print('file not exists')
             sys.exit(1)
+
+    return dic
+
+
+def read_file_c(filename, city=''):  # 读取文件
+    listt = []
+    if city == '':
+        city = 'DEFAULT'
+    with open(filename) as file:
+        for i in file:
+            if city in i:
+                for j in file:
+                    if j == '\n':
+                        break
+                    if '=' in j:
+                        opera = '='
+                    else:
+                        continue
+                    try:
+                        i, j = j.strip().split(opera)
+                    except:
+                        print('File Error')
+                    listt.append([i.strip(), j.strip()])
+        dic = dict(listt)
     return dic
 
 
@@ -63,7 +99,7 @@ def read_file(filename):  # 读取文件
                 i, j = i.strip().split(opera)
             except:
                 print('File Error')
-            listt.append([i.strip(), float(j.strip())])
+            listt.append([i.strip(), j.strip()])
         dic = dict(listt)
     return dic
 
@@ -71,20 +107,22 @@ def read_file(filename):  # 读取文件
 def write_file(filename, dic):  # 写入文件
     with open(filename, 'w') as file:
         for d in dic:
-            s = '{},{},{:.2f},{:.2f},{:.2f}\n'.format(d, int(dic[d][0])
-                                          , dic[d][1], dic[d][2]
-                                          , dic[d][3])
+            s = '{},{},{:.2f},{:.2f},{:.2f},{}\n'.format(d, int(dic[d][0]),
+                                                         dic[d][1], dic[d][2],
+                                                         dic[d][3], dic[d][4])
             file.write(s)
 
 
 def cal(dc, ds):
     dic = {}
-    JiShuL = dc['JiShuL']
-    JiShuH = dc['JiShuH']
-    insurespre = dc['YangLao'] + dc['YiLiao'] + dc['ShiYe'] + dc['GongShang'] + dc['ShengYu'] + dc['GongJiJin']
+    JiShuL = float(dc['JiShuL'])
+    JiShuH = float(dc['JiShuH'])
+    insurespre = float(dc['YangLao']) + float(dc['YiLiao']) + \
+                 float(dc['ShiYe']) + float(dc['GongShang']) + \
+                 float(dc['ShengYu']) + float(dc['GongJiJin'])
 
     for i in ds:
-        salary = ds[i]
+        salary = float(ds[i])
         if salary > JiShuH:
             insures = JiShuH * insurespre
         elif salary < JiShuL:
@@ -94,9 +132,12 @@ def cal(dc, ds):
 
         tax = salary - insures - 3500
 
-        if tax <= 1500 and tax > 0:
+        if tax <= 0:
+            tax = 0
+        elif 1500 <= tax:
             tax = tax * 0.03 - 0
         elif tax <= 4500:
+            print(1)
             tax = tax * 0.10 - 105
         elif tax <= 9000:
             tax = tax * 0.20 - 555
@@ -106,35 +147,39 @@ def cal(dc, ds):
             tax = tax * 0.30 - 2755
         elif tax <= 80000:
             tax = tax * 0.35 - 5505
-        elif tax > 80000:
-            tax = tax * 0.45 - 13505
         else:
-            tax = 0
+            tax = tax * 0.45 - 13505
+
         after = salary - insures - tax
-        list1 = [salary, insures, tax, after]
+        now = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
+        list1 = [salary, insures, tax, after, now]
         dic[i] = list1
 
     return dic
 
+
 def part1():
     dic1 = get_para()
     cl = Info()
-    cl.salaryl = read_file(dic1['icsv'])
-    cl.configl = read_file(dic1['cfg'])
+    cl.salaryl = read_file(dic1['info'])
+    cl.configl = read_file_c(dic1['config'], dic1['city'])
     package = [cl, dic1]
     queue1.put(package)
 
+
 def part2():
-    package =queue1.get()
+    package = queue1.get()
     cl = package[0]
     dic2 = cal(cl.configl, cl.salaryl)
     package.append(dic2)
     queue2.put(package)
 
+
 def part3():
     package = queue2.get()
     dic1, dic2 = package[1], package[2]
-    write_file(dic1['ocsv'], dic2)
+    write_file(dic1['output'], dic2)
+
 
 if __name__ == '__main__':
     queue1 = Queue()
@@ -145,6 +190,5 @@ if __name__ == '__main__':
     proc1.start()
     proc2.start()
     proc3.start()
-    proc1.join()
-    proc2.join()
-    proc3.join()
+
+
