@@ -4,6 +4,7 @@ import os.path
 from multiprocessing import Queue, Process
 import getopt
 from datetime import datetime
+import configparser
 
 
 class Info:
@@ -67,21 +68,13 @@ def read_file_c(filename, city=''):  # 读取文件
     if city == '':
         city = 'DEFAULT'
     with open(filename) as file:
-        for i in file:
-            if city in i:
-                for j in file:
-                    if j == '\n':
-                        break
-                    if '=' in j:
-                        opera = '='
-                    else:
-                        continue
-                    try:
-                        i, j = j.strip().split(opera)
-                    except:
-                        print('File Error')
-                    listt.append([i.strip(), j.strip()])
+        config = configparser.ConfigParser(allow_no_value=True)
+        config.read_file(file)
+        cof = config[city].keys()
+        for i in cof:
+            listt.append([i, config[city][i]])
         dic = dict(listt)
+
     return dic
 
 
@@ -91,12 +84,8 @@ def read_file(filename):  # 读取文件
         for i in file:
             if i == '\n':
                 break
-            if '=' in i:
-                opera = '='
-            else:
-                opera = ','
             try:
-                i, j = i.strip().split(opera)
+                i, j = i.strip().split(',')
             except:
                 print('File Error')
             listt.append([i.strip(), j.strip()])
@@ -115,18 +104,18 @@ def write_file(filename, dic):  # 写入文件
 
 def cal(dc, ds):
     dic = {}
-    JiShuL = float(dc['JiShuL'])
-    JiShuH = float(dc['JiShuH'])
-    insurespre = float(dc['YangLao']) + float(dc['YiLiao']) + \
-                 float(dc['ShiYe']) + float(dc['GongShang']) + \
-                 float(dc['ShengYu']) + float(dc['GongJiJin'])
+    jishul = float(dc['jishul'])
+    jishuh = float(dc['jishuh'])
+    insurespre = float(dc['yanglao']) + float(dc['yiliao']) + \
+                 float(dc['shiye']) + float(dc['gongshang']) + \
+                 float(dc['shengyu']) + float(dc['gongjijin'])
 
     for i in ds:
         salary = float(ds[i])
-        if salary > JiShuH:
-            insures = JiShuH * insurespre
-        elif salary < JiShuL:
-            insures = JiShuL * insurespre
+        if salary > jishul:
+            insures = jishul * insurespre
+        elif salary < jishul:
+            insures = jishul * insurespre
         else:
             insures = salary * insurespre
 
@@ -137,7 +126,6 @@ def cal(dc, ds):
         elif 1500 <= tax:
             tax = tax * 0.03 - 0
         elif tax <= 4500:
-            print(1)
             tax = tax * 0.10 - 105
         elif tax <= 9000:
             tax = tax * 0.20 - 555
