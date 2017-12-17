@@ -123,7 +123,7 @@ def cal(dc, ds):
 
         if tax <= 0:
             tax = 0
-        elif 1500 <= tax:
+        elif tax <= 1500:
             tax = tax * 0.03 - 0
         elif tax <= 4500:
             tax = tax * 0.10 - 105
