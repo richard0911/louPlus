@@ -112,8 +112,8 @@ def cal(dc, ds):
 
     for i in ds:
         salary = float(ds[i])
-        if salary > jishul:
-            insures = jishul * insurespre
+        if salary > jishuh:
+            insures = jishuh * insurespre
         elif salary < jishul:
             insures = jishul * insurespre
         else:
