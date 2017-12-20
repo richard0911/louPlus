@@ -57,7 +57,7 @@ def get_para():  # 从命令行参数获取输入信息
         if d == 'output' or d == 'city':
             continue
         if not os.path.exists(dic[d]):
-            print('file not exists')
+            print('files not exists')
             sys.exit(1)
 
     return dic

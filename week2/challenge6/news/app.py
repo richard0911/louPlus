@@ -40,6 +40,7 @@ def get_error(error):
 	return render_template('404.html', restr='shiyanlou 404'), 404
 
 
+
 def get_file_info(filepath='', filename=''):
 	file_context = []
 	if filepath != '':
