@@ -1,0 +1,7 @@
+<div>
+    {% for file in contextlist %}
+        {% for key in file.keys() %}
+            <p>{{ key }} : {{ file[key] }}</p>
+        {% endfor %}
+    {% endfor %}
+</div>
