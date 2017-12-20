@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, abort
+from flask import Flask, render_template
 import json
 import os
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-	filepath = r'E:\code_git\forPython\louPlus\week2\challenge6\file'
+	filepath = r'/home/shiyanlou/files'
 	file_context = get_file_info(filepath)
 	file_tar = []
 
@@ -23,21 +23,21 @@ def index():
 @app.route('/files/<filename>')
 def file(filename):
 	filename = str(filename.strip())
-	filepath = r'E:\code_git\forPython\louPlus\week2\challenge6\file'
-	new_filename = filepath + '\\' + filename + '.json'
+	filepath = r'/home/shiyanlou/files'
+	new_filename = filepath + '/' + filename + '.json'
 	if os.path.exists(new_filename):
 		contextlist = get_file_info(filename=new_filename)
 		return render_template('file.html', contextlist=contextlist)
 	else:
-		return error('shiyanlou 404')
+		return get_error()
 	# 读取并显示 filename.json 中的文章内容
 	# 例如 filename='helloshiyanlou' 的时候显示 helloshiyanlou.json 中的内容
 	# 如果 filename 不存在，则显示包含字符串 `shiyanlou 404` 404 错误页面
 
 
-def error(error_msg):
-	abort(404)
-	return render_template('404.html', restr=error_msg)
+@app.errorhandler(404)
+def get_error(error):
+	return render_template('404.html', restr='shiyanlou 404'), 404
 
 
 def get_file_info(filepath='', filename=''):
@@ -56,3 +56,6 @@ def get_file_info(filepath='', filename=''):
 		pass
 
 	return file_context
+
+if __name__ == '__main__':
+	app.run()
