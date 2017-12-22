@@ -1,0 +1,6 @@
+<ol>
+    {% for filename in file_tar %}
+        <a href="/files/{{filename['fid']}}">{{filename['title']}}</a>
+        <br>
+    {% endfor %}
+</ol>
