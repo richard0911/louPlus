@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <ul class="nav nav-pills nav-stacked">
+        {% for filename in file_tar %}
+        <li><a href="/files/{{filename['fid']}}">{{filename['title']}}</a></li><br><br>
+            <li><div>tag:
+                {% for tag in  filename['tags'] %}
+                    {{tag}}
+                {% endfor %}
+        </div></li>
+        <br>
+        {% endfor %}
+    </ul>
+{% endblock %}}
+

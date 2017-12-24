@@ -1,0 +1,23 @@
+
+{% block filelist %}
+<head>
+    <title>filelist</title>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+</head>
+<body>
+    <script src="{{ url_for('static', filename='bootstrap-3.3.7-dist/js/bootstrap.min.js') }}">
+        {% block script_context %}{% endblock %}
+    </script>
+    <div>
+        {% block header %}
+            <h1> File List</h1>
+        {% endblock %}
+    </div>
+    <div>{% block content %}{% endblock %}</div>
+</body>
+<footer>
+    {% block footer %}
+        &copy;Copyright 2017 by <a href="http://www.shiyanlou.com">shiyanlou</a>
+    {% endblock %}
+</footer>
+{% endblock %}
