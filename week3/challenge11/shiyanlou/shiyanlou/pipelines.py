@@ -6,12 +6,13 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from sqlalchemy.orm import sessionmaker
-from .models import engine
+from .models import engine, Repository
 
 
 class ShiyanlouPipeline(object):
 
     def process_item(self, item, spider):
+        self.session.add(Repository(**item))
         return item
 
     def open_spider(self, spider):
