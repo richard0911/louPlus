@@ -12,9 +12,9 @@ from .models import engine, Repository
 class ShiyanlouPipeline(object):
 
     def process_item(self, item, spider):
-        item['commits'] = int(item['commits'])
-        item['branches'] = int(item['branches'])
-        item['releases'] = int(item['releases'])
+        item['commits'] = int(item['commits'].replace(',', ''))
+        item['branches'] = int(item['branches'].replace(',', ''))
+        item['releases'] = int(item['releases'].replace(',', ''))
 
         self.session.add(Repository(**item))
         return item
