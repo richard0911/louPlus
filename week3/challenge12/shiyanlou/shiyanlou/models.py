@@ -12,7 +12,7 @@ class Repository(Base):
 	id = Column(Integer, primary_key=True)
 	name = Column(String(64), index=True)
 	update_time = Column(DateTime)
-	commit = Column(Integer)
+	commits = Column(Integer)
 	branches = Column(Integer)
 	releases = Column(Integer)
 

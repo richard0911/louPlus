@@ -12,7 +12,7 @@ from .models import engine, Repository
 class ShiyanlouPipeline(object):
 
     def process_item(self, item, spider):
-        item['commit'] = int(item['commit'])
+        item['commits'] = int(item['commits'])
         item['branches'] = int(item['branches'])
         item['releases'] = int(item['releases'])
 

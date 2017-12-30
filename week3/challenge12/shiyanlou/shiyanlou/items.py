@@ -14,6 +14,6 @@ class ShiyanlouItem(scrapy.Item):
 
     name = scrapy.Field()
     update_time = scrapy.Field()
-    commit = scrapy.Field()
+    commits = scrapy.Field()
     branches = scrapy.Field()
     releases = scrapy.Field()

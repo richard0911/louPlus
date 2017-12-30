@@ -23,10 +23,9 @@ class CoursSpider(scrapy.Spider):
             yield request
 
     def parse_info(self, response):
-        for resp in response.xpath('//div[@class="stats-switcher-wrapper"]/ul/li'):
-            item = response.meta['item']
-            item['commit'] = resp.xpath('.//a[contains(@href, "commit")]/span/text()').re_first('[^\s*|\\*]+')
-            item['branches'] = resp.xpath('.//a[contains(@href, "branch")]/span/text()').re_first('[^\s*|\\*]+')
-            item['releases'] = resp.xpath('.//a[contains(@href, "releases")]/span/text()').re_first('[^\s*|\\*]+')
+        item = response.meta['item']
+        item['commits'] = response.xpath('//div[@class="stats-switcher-wrapper"]/ul/li/a[contains(@href, "commits")]/span/text()').re_first('[^\s*|\\*]+')
+        item['branches'] = response.xpath('//div[@class="stats-switcher-wrapper"]/ul/li/a[contains(@href, "branches")]/span/text()').re_first('[^\s*|\\*]+')
+        item['releases'] = response.xpath('//div[@class="stats-switcher-wrapper"]/ul/li/a[contains(@href, "releases")]/span/text()').re_first('[^\s*|\\*]+')
 
-            return item
+        yield item
