@@ -17,7 +17,8 @@ def show_pic():
 
 	user_id = list(sf.index)
 	minutes = list(sf['minutes'])
-
+	ax.get_xlabel('User ID')
+	ax.set_ylabel('Study Time')
 	ax.plot(user_id, minutes)
 	fig.show()
 
