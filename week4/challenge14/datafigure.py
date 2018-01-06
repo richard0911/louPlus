@@ -19,7 +19,7 @@ def show_pic():
 	minutes = list(sf['minutes'])
 
 	ax.plot(user_id, minutes)
-
+	fig.show()
 
 if __name__ == '__main__':
 	show_pic()
