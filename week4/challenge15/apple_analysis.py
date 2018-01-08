@@ -8,11 +8,12 @@ def quarter_volume():
 					  index=pd.to_datetime(data['Date'].values),
 					  columns=['Volume'])
 
-	gf = df.resample('3M').sum()
+
+	gf = df.resample('Q',closed='right').sum()
 	volume_list =list(gf['Volume'].values)
 	volume_list.sort(reverse=True)
 	second_volume = volume_list[1]
-	return second_volume
+	return print(second_volume)
 
 if __name__ == '__main__':
 	quarter_volume()
