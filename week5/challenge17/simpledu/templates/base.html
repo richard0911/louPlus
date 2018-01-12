@@ -28,8 +28,23 @@
                     <li><a href="#">直播</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ url_for('front.register') }}">注册</a> </li>
-                    <li><a href="{{ url_for('front.login') }}">登录</a> </li>
+                    {% if not current_user.is_authenticated %}
+                        <li><a href="{{ url_for('front.register') }}">注册</a> </li>
+                        <li><a href="{{ url_for('front.login') }}">登录</a> </li>
+                    {% else %}
+                        <li class="dropown">
+                            <a href="#" class="dorpdown-toggle" data-toggle="dropdown"
+                               role="button" aria-haspopup="ture" aria-expanded="fales">
+                                {{ current_user.username }}
+                                <span class="'caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">个人主页</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">退出登陆</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

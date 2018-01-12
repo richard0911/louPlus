@@ -1,6 +1,10 @@
 from flask import Blueprint, render_template
+from flask import url_for
 from ..models import Course
 from simpledu.forms import LoginFrom, RegisterFrom
+from flask import flash, redirect
+from flask_login import login_user
+from simpledu.models import User
 
 
 front = Blueprint('front', __name__)
@@ -12,13 +16,21 @@ def index():
     return render_template('index.html', courses=courses)
 
 
-@front.route('/login')
+@front.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginFrom()
+    if form.validate_on_submit():
+        user = User.qurey.filter_by(email=form.email.data).first()
+        login_user(user, form.remember_me.data)
+        return redirect(url_for('.index'))
     return render_template('login.html', form=form)
 
 
-@front.route('/register')
+@front.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterFrom()
+    if form.validate_on_submit():
+        form.create_user()
+        flash('注册成功，请登录！', 'success')
+        return redirect(url_for('/login'))
     return render_template('register.html', form=form)
