@@ -9,7 +9,7 @@ class RegisterFrom(FlaskForm):
     username = StringField('用户名', validators=[Required(), Length(3, 24, message='输入有误')])
     email = StringField('邮箱', validators=[Required(), Email(message='输入有误')])
     password = PasswordField('密码', validators=[Required(), Length(6, 24, message='输入有误')])
-    repeat_password = PasswordField('重复密码', validators=[Required(), EqualTo(password, message='输入有误')])
+    repeat_password = PasswordField('重复密码', validators=[Required(), EqualTo('password', message='输入有误')])
     submit = SubmitField('提交')
 
     def create_user(self):

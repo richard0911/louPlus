@@ -3,7 +3,7 @@
     {{ form.csrf_token }}
     {% for field in form %}
         {% if field.type == 'CSRFTokenField' %}
-            {{  '' }}
+            {{ '' }}
         {% elif field.type == 'SubmitField' %}
             </br>{{ form.submit(class='btn btn-primary', type='submit') }}
         {% elif field.type == 'BooleanField' %}
@@ -11,8 +11,13 @@
                 {{ field() }}{{ field.label.text }}
             </label>
         {% else %}
-            <div class="form-group">
+            <div class="form-group {% if field.errors %}has-error{% endif %}">
                 {{ field.label }}{{ field(class='form-control') }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
             </div>
         {% endif %}
     {% endfor %}
