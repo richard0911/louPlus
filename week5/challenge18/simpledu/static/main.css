@@ -8,11 +8,15 @@ a,a:hover,a:visited {
 }
 
 .course__name,.course__description{
-    text-overflow:ellopsos;
+    text-overflow: ellipsis;
     overflow:hidden;
     white-space: nowrap
 }
 
 .course img {
     height: 160px !important;
+}
+
+.nav-pagination {
+    text-align: center;
 }
