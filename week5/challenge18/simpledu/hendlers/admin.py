@@ -70,7 +70,7 @@ def users():
     return render_template('admin/users.html', pagination=pagination)
 
 
-@admin.route('/user/create_user')
+@admin.route('/user/create_user', methods=['GET', 'POST'])
 @admin_required
 def create_user():
     form = UserFrom()
@@ -81,7 +81,7 @@ def create_user():
     return render_template('admin/create_user.html', form=form)
 
 
-@admin.route('/user/<int:user_id>/edit')
+@admin.route('/user/<int:user_id>/edit', methods=['GET', 'POST'])
 @admin_required
 def edit_user(user_id):
     user = User.query.get_or_404(user_id)
@@ -93,7 +93,7 @@ def edit_user(user_id):
     return render_template('admin/edit_user.html', form=form, user=user)
 
 
-@admin.route('/user/<int:user_id>/delete')
+@admin.route('/user/<int:user_id>/delete', methods=['GET', 'POST'])
 @admin_required
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
