@@ -1,0 +1,7 @@
+{% extends 'admin/index.html' %}
+
+{% block operation %}
+    <a href="{{ url_for('admin.create_course') }}" type="button" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true">添加课程</span>
+    </a>
+{% endblock %}
