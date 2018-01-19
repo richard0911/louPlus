@@ -10,7 +10,7 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 @admin.route('/')
 @admin_required
 def admin_index():
-    return render_template('admin/live_page.html')
+    return render_template('admin/index.html')
 
 
 @admin.route('/courses')

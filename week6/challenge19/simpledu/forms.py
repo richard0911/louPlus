@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField
 from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRange
-from simpledu.models import db, User, Course
+from simpledu.models import db, User, Course, LiveInfo
 from wtforms import ValidationError
 
 
@@ -90,3 +90,16 @@ class UserFrom(FlaskForm):
         db.commit()
         return user
 
+
+class LiveForm(FlaskForm):
+    name = StringField('直播名称', validators=[Required(), Length(3, 32)])
+    username = StringField('直播用户', validators=[Required(), Length(3, 24)])
+    submit = SubmitField('提交')
+
+    def create_live(self):
+        user_id = User.query.filter_by(username=self.username.data).first().id
+        live_info = LiveInfo(user_id=user_id)
+        self.populate_obj(live_info)
+        db.session.add(live_info)
+        db.session.commit()
+        return live_info

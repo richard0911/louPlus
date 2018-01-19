@@ -93,8 +93,8 @@ class LiveInfo(Base):
     __tablename__ = 'live_info'
 
     id = db.Column(db.Integer, primary_key=True)
-    live_name = db.Column(db.String(256), index=True, nullable=False)
-    live_user_id = db.Column(db.String(32), db.ForeignKey('user.id'))
+    name = db.Column(db.String(256), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     live_user = db.relationship('User', uselist=False)
 
     def __repr__(self):
