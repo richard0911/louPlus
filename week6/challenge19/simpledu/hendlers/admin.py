@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, current_app, flash, url_for, redirect
 from simpledu.decorators import admin_required
-from simpledu.models import Course, db, User
+from simpledu.models import Course, db, User, LiveInfo
 from simpledu.forms import CoursesFrom, UserFrom
 
 
@@ -101,3 +101,14 @@ def delete_user(user_id):
     db.session.commit()
     flash('用户删除成功', 'success')
     return redirect(url_for('admin.users'))
+
+@admin.route('/live')
+@admin_required
+def manage():
+	page = request.args.get('page', default=1, type=int)
+	pagination = LiveInfo.query.paginate(
+		page=page,
+		per_page=current_app.config['INDEX_PER_PAGE'],
+		error_out=False
+	)
+	return render_template('live/live.html', pagination=pagination)

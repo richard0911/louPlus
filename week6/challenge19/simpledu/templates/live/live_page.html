@@ -5,6 +5,10 @@
 {% block body %}
     <div class="row">
         <div class="col-md-9">
+            <div>
+                <p>直播名称: {{ live_info.name }}</p>
+                <p>直播人: {{ live_info.live_user.username }}</p>
+            </div>
             <video id="videoElement" width="100%" height="500px" controls="controls">
             </video>
         </div>

@@ -7,21 +7,10 @@ from simpledu.forms import LiveForm
 live = Blueprint('live', __name__, url_prefix='/live')
 
 
-@live.route('/live_page')
-def index():
-	return render_template('live/live_page.html')
-
-
 @live.route('/')
-@admin_required
-def manage():
-	page = request.args.get('page', default=1, type=int)
-	pagination = LiveInfo.query.paginate(
-		page=page,
-		per_page=current_app.config['INDEX_PER_PAGE'],
-		error_out=False
-	)
-	return render_template('live/live.html', pagination=pagination)
+def index():
+	live_info = LiveInfo.query.first()
+	return render_template('live/live_page.html', live_info=live_info)
 
 
 @live.route('/create_live', methods=['GET', 'POST'])
