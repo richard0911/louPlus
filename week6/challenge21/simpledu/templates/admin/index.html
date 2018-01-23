@@ -12,7 +12,7 @@ Admin
             <a href="{{ url_for('admin.users') }}" class="list-group-item">用户</a>
             <a href="{{ url_for('admin.courses')}}" class="list-group-item">课程</a>
             <a href="{{ url_for('admin.manage')}}" class="list-group-item">直播</a>
-            <a href="{{ url_for('admin.sendsysmsg')}}" class="list-group-item">直播消息发送</a>
+            <a href="{{ url_for('live.sendsysmsg')}}" class="list-group-item">直播消息发送</a>
         </div>
         {% block operation %}
         {% endblock %}

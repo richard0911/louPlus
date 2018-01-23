@@ -31,5 +31,5 @@ def sendsysmsg():
     if form.validate_on_submit():
         form.send()
         flash('发送成功', 'sucess')
-        return redirect(url_for('admin.sendsysmsg'))
+        return redirect(url_for('live.sendsysmsg'))
     return render_template('live/systemmessage.html', form=form)
