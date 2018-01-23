@@ -114,13 +114,3 @@ def manage():
 	)
 	return render_template('live/live.html', pagination=pagination)
 
-
-@admin.route('/message', methods=['GET', 'POST'])
-@admin_required
-def sendsysmsg():
-    form = SysMsgForm()
-    if form.validate_on_submit():
-        form.send()
-        flash('发送成功', 'sucess')
-        return redirect(url_for('admin.sendsysmsg'))
-    return render_template('live/sys_msg.html', form=form)
